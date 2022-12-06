@@ -17,7 +17,16 @@ def read_Data(fileName):
     df_Data1 = pd.read_csv(fileName)
     df_Data = trimData(df_Data1)
     df_dataTransposed = df_Data.T
+    df_dataTransposed = cleanDataTrans(df_dataTransposed)
     return df_Data, df_dataTransposed
+
+""""""
+
+def cleanDataTrans(dataframe):
+    dataframe.rename(columns=dataframe.loc["Country Name"], inplace=True)
+    dataframe = dataframe.drop([ "Country Name"], axis=0)
+    dataframe.index.name = "Year"
+    return dataframe
 
 
 """"""
@@ -77,6 +86,15 @@ def pieChartdatManu():
     Dataframe = np.array(Dataframe[:1].iloc[0])
     return Dataframe, myLabels, myExplode
 
+""""""
+
+
+def Scatterdatamanu():
+    Dataframe =  df_climateChange.groupby(by=['Indicator Name']).mean()
+    nitrous_change =np.array(Dataframe.iloc[6,2:24])
+    methane_change = np.array(Dataframe.iloc[4,2:24])
+    yearSeries = np.linspace(1991, 2012,22)
+    return Dataframe,nitrous_change,methane_change,yearSeries
 
 """"""
 
@@ -121,4 +139,17 @@ plt.show()
 plt.Figure()
 df_pop, myLabels, myExplode = pieChartdatManu()
 plt.pie(df_pop, shadow = True, labels=myLabels, explode=myExplode)
+plt.show()
+
+#Scatter
+Dataframe,nitrous_change,methane_change,yearSeries = Scatterdatamanu()
+plt.figure()
+plt.scatter(yearSeries,nitrous_change,label='new', alpha=0.3, edgecolors='none')
+plt.scatter(yearSeries,methane_change,label='old',alpha=0.9, edgecolors='none')
+plt.legend(
+           ('Nitrous Oxide', 'Methane'),
+           scatterpoints=1,
+           loc='upper right',
+           ncol=3,
+           fontsize=8)
 plt.show()
