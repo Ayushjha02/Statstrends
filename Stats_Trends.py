@@ -10,7 +10,6 @@ Assignment : Statistics and trend
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import scipy.stats as sci
 
 
 # Function to read and transpose the file
@@ -23,7 +22,7 @@ def read_Data(fileName):
     include header as needed
     """
     df_Data1 = pd.read_csv(fileName)
-# using trimData function to remove unwanted data
+# Using trimData function to remove unwanted data
     df_Data = trimData(df_Data1)
     df_dataTransposed = df_Data.T
     df_dataTransposed = cleanDataTrans(df_dataTransposed)
@@ -118,7 +117,7 @@ def pieChartdatManu():
 # Function used for scatter plot
 def Scatterdatamanu():
     """
-    Manupulates the data for appropriate graph.
+    Fetch and manupulate the data for appropriate graph.
 
     function uses mean method to get the mean for all indicator grouped
     by and then return the data useful to plot scatter
@@ -133,7 +132,7 @@ def Scatterdatamanu():
 # Function used for plot
 def plotdatamanu():
     """
-    Manupulates the data for appropriate graph.
+    Fetch and manupulate the data for appropriate graph.
 
     Function to manupulate the data used to plot graph
     """
@@ -151,17 +150,19 @@ df_climateChange, df_climateChange_trans = read_Data('Data.csv')
 # Using pandas bar plot method to get all the required data for bar plot
 df_elec = barPlotDataManp()
 ax = df_elec.plot.bar(width=0.8)
-title = 'coal Consumption in different country for electricity production(%)'
-ax.plot(rot=45, title=title)
-ax.legend(loc='center left', bbox_to_anchor=(1.0, 0.7))
+ax.plot()
+plt.xticks(rotation=0)
+ax.legend(loc='lower right', ncol=5, bbox_to_anchor=(1.0, -.3),
+          prop={'size': 7})
 plt.ylabel("Percentage of coal consumption")
+plt.title("Electricity production from coal sources (% of total)", fontsize=10)
 plt.show()
 
 
 # plot
 # Using plotdatamanu method to get all the required data for plot
 df_co2 = plotdatamanu()
-plt.Figure(figsize=(12, 12))
+plt.Figure(figsize=(8, 8))
 plt.plot(df_co2["Year"], df_co2["India"], label="India")
 plt.plot(df_co2["Year"], df_co2["China"], label="China")
 plt.plot(df_co2["Year"], df_co2["United States"], label="US")
@@ -172,7 +173,8 @@ plt.plot(df_co2["Year"], df_co2["South Africa"], label="South Africa")
 plt.plot(df_co2["Year"], df_co2["Germany"], label="Germany")
 plt.xlabel("Year")
 plt.ylabel("CO2 Consumption")
-plt.title("CO2 emissions (kt) by countries for period of 1989-2017")
+plt.title("CO2 emissions (kt) by countries for period of 1989-2017",
+          fontsize=10)
 plt.legend(loc=2, prop={'size': 7})
 plt.show()
 
@@ -205,8 +207,3 @@ plt.legend(
     ncol=3,
     fontsize=8)
 plt.show()
-
-
-# heatmap
-df_frame = df_climateChange[df_climateChange['Country Name']=='China']
-df_frame = df_frame.iloc[:,4:26]
